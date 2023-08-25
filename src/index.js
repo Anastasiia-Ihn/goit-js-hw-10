@@ -1,4 +1,5 @@
-import { fetchBreeds } from './cat-api'
+import { fetchBreeds } from './cat-api';
+import { fetchCatByBreed } from './cat-api';
 import Notiflix from 'notiflix';
 
 const refs = {
@@ -18,34 +19,23 @@ fetchBreeds().then((data) => {
   .catch(() => Notiflix.Notify.warning('Oops! Something went wrong! Try reloading the page!')
 )
 
-
 refs.breedsSelect.addEventListener('change', clickEL)
 
 function clickEL(e) {
     e.preventDefault();
-  fetchCatByBreed(e)
-
-  function fetchCatByBreed(breedId) {
-    const URL = 'https://api.thecatapi.com/v1/images/search';
-    const API_KEY = 'live_yhNqPNosE5VgQrJCEBVvAw9Au1z9kRoQQbLNilRJQliutJoVguMi2HuJv8UgwvvL';
-    const breed_ids = e.target.value;
-    return fetch(`${URL}?api_key=${API_KEY}&breed_ids=${breed_ids}`)
-      .then((resp) => {
-        console.log(resp);
-        if (!resp.ok) { Notiflix.Notify.warning('Oops! Something went wrong! Try reloading the page!') }
-        return resp.json();
-      }).then((data) => {
-        console.log(data);
-        console.log(data[0].breeds[0]);
-        if (e.target.value === data[0].breeds[0].id) {
+  
+  let idEvent = e.currentTarget.value
+  
+  fetchCatByBreed(e).then((data) => {
+             if (idEvent === data[0].breeds[0].id) {
           renderCatCard(data);
         }
-      })
-  
-      .catch(Notiflix.Notify.warning('Oops! Something went wrong! Try reloading the page!')
+  })
+    .catch(() => {
+      Notiflix.Notify.warning('Oops! Something went wrong! Try reloading the page!');
+      console.log('тут помилка')
+    }
       )
-
-  }
 }
       
 function renderCatCard(json) {
