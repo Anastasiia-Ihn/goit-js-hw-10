@@ -25,7 +25,7 @@ function clickEL(e) {
     e.preventDefault();
   
   let idEvent = e.currentTarget.value
-  
+  Notiflix.Notify.info('Loading data, please wait...');
   fetchCatByBreed(e).then((data) => {
              if (idEvent === data[0].breeds[0].id) {
           renderCatCard(data);
