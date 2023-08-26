@@ -11,9 +11,7 @@ export function fetchBreeds() {
     if (!resp.ok) {Notiflix.Notify.warning('Oops! Something went wrong! Try reloading the page!')}
     return resp.json();
     })
-    .catch(() => {
-      Notiflix.Notify.warning('Oops! Something went wrong! Try reloading the page!');
-    })
+    .catch(() => Notiflix.Notify.warning('Oops! Something went wrong! Try reloading the page!'))
 }
 
 
@@ -27,7 +25,6 @@ export function fetchCatByBreed(breedId) {
       if (!resp.ok) { Notiflix.Notify.warning('Oops! Something went wrong! Try reloading the page!') }
       return resp.json();
     })
-    .catch(() => {
-      Notiflix.Notify.warning('Oops! Something went wrong! Try reloading the page!');
-    })
+    .catch(() => 
+      Notiflix.Notify.warning('Oops! Something went wrong! Try reloading the page!'))
 }

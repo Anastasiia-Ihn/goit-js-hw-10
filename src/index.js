@@ -1,10 +1,9 @@
-import { fetchBreeds } from './cat-api';
-import { fetchCatByBreed } from './cat-api';
+import { fetchBreeds, fetchCatByBreed } from './cat-api';
 import Notiflix from 'notiflix';
 
 const refs = {
     breedsSelect: document.querySelector(".breed-select"),
-    loader: document.querySelector('.loader'),
+    loader: document.querySelector('.loader-text'),
     error: document.querySelector('.error'),
     catInfo: document.querySelector('.cat-info'),
 };
@@ -24,19 +23,20 @@ refs.breedsSelect.addEventListener('change', clickEL)
 function clickEL(e) {
     e.preventDefault();
   
-  let idEvent = e.currentTarget.value
-  Notiflix.Notify.info('Loading data, please wait...');
+  let idEvent = e.currentTarget.value;
+
+  refs.loader.classList.remove('is-hidden');
+  
   fetchCatByBreed(e).then((data) => {
-             if (idEvent === data[0].breeds[0].id) {
-          renderCatCard(data);
-        }
+    if (idEvent === data[0].breeds[0].id) {
+      renderCatCard(data);
+    };
   })
     .catch(() => {
       Notiflix.Notify.warning('Oops! Something went wrong! Try reloading the page!');
-      console.log('тут помилка')
     }
-      )
-}
+    ).finally(() => refs.loader.classList.add('is-hidden')
+)}
       
 function renderCatCard(json) {
   const breedInfo = json[0].breeds[0];
@@ -61,32 +61,41 @@ function renderCatCard(json) {
 
 
 
-// і тоді в зен передати ту ф - цію.then(renderCatCard)
-
-
-//   if (e.target.value === qwe) {
-//       create(elem);
-      
-//   } else {
-//     refs.error.classList.add("is-hidden")
-    
-// }  
-// }
 
 // fetchBreeds().then((data) => {
-//     console.log(data);
-//     data.find(elem =>
-//     refs.breedsSelect.addEventListener('click', (e)=> {
+//   data.map(elem => {
+//     const value = elem.id
+//     refs.breedsSelect.insertAdjacentHTML('beforeend', `<option value="${elem.id}">${elem.name}</option>`);
+
+
+//     refs.breedsSelect.addEventListener('change', (e) => {
 //       e.preventDefault();
+//       refs.loader.classList.remove('is-hidden');
       
-      
-//   console.log(e.target.value);
-//   console.log(elem.id);
-//     if (e.target.value===elem.id) {
-//        renderCatCard() 
-//     }
-// }  )
- 
-//  )
+//       if (e.target.value === value) {
+//         create(elem);
+//       };
+//     })
+//   });
 // })
+//   .catch(() => Notiflix.Notify.warning('Oops! Something went wrong! Try reloading the page!'))
+//   .finally(() => refs.loader.classList.add('is-hidden'))
+
+
+// function create(oneEl) {
+//   const { name, description, temperament, image: { url } } = oneEl;
+//   const markup = `
     
+//    <div class="blok-img">
+//       <img src="${url}" alt="Cat breed ${name}" class="image" width="500" height="500">
+//    </div>
+//    <div class="card">
+//        <h2 class="header">${name}</h2>
+//        <div class="description">
+//         <p class="text">${description}</p>
+//         <p class="text"><b>Temperament:</b> ${temperament}</p>
+//       </div>
+//    </div>
+//   `;
+//   refs.catInfo.innerHTML = markup;
+// }
