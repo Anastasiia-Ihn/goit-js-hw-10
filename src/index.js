@@ -7,12 +7,16 @@ const refs = {
     error: document.querySelector('.error'),
     catInfo: document.querySelector('.cat-info'),
 };
-refs.loader.classList.add('is-hidden')
-refs.error.classList.add('is-hidden')
+isHidden(refs.error);
+isHidden(refs.breedsSelect)
 
 fetchBreeds().then((data) => {  
+  refs.breedsSelect.classList.remove('is-hidden')
+  refs.loader.classList.remove('is-hidden');
+
   data.map(elem => {
     refs.breedsSelect.insertAdjacentHTML('beforeend', `<option value="${elem.id}">${elem.name}</option>`);
+    isHidden(refs.loader);
   })
 })
   .catch(() => Notiflix.Notify.warning('Oops! Something went wrong! Try reloading the page!')
@@ -21,7 +25,9 @@ fetchBreeds().then((data) => {
 refs.breedsSelect.addEventListener('change', clickEL)
 
 function clickEL(e) {
-    e.preventDefault();
+  e.preventDefault();
+
+  refs.catInfo.innerHTML = '';
   
   let idEvent = e.currentTarget.value;
 
@@ -32,10 +38,11 @@ function clickEL(e) {
       renderCatCard(data);
     };
   })
-    .catch(() => {
+    .catch(() => { 
       Notiflix.Notify.warning('Oops! Something went wrong! Try reloading the page!');
     }
-    ).finally(() => refs.loader.classList.add('is-hidden')
+    ).finally(() => isHidden(refs.loader)
+
 )}
       
 function renderCatCard(json) {
@@ -58,6 +65,21 @@ function renderCatCard(json) {
   `;
   refs.catInfo.innerHTML = markup;
 }
+
+
+function isHidden(elem) {
+   elem.classList.add('is-hidden')
+}
+
+
+
+// function isHidden(elem) {
+//   if (elem.classList.includes('is-hidden')) {
+//         refs.loader.classList.remove('is-hidden');
+
+//   }
+//   elem.classList.add('is-hidden')
+// }
 
 
 
